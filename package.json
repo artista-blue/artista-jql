@@ -1,5 +1,5 @@
 {
-    "name": "jql",
+    "name": "artista-jql",
     "version": "0.0.1",
     "description": "Query Language for JSON",
     "keywords": ["JSON", "query", "language"],
