@@ -22,6 +22,4 @@ cat ${WORK_DIR}/${NODE_JS_FILE} ${SRC_DIR}/item-filter.js > ${DIST_DIR}/${NODE_J
 npm run test
 
 # cleanup
-#rm -rf node_modules
-rm package-lock.json
 rm -rf work

@@ -39,6 +39,8 @@ const query = "kb = false";
 const filteredItems = JQL.filter(query, items, itemKey);
 ```
 
+Return value
+
 ```sh
 [
   {
