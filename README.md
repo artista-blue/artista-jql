@@ -9,10 +9,14 @@ $ npm install artista-jql
 ```
 
 ### Browser
+```sh
 <script src="..../jql/dist/jql.js"></script>
+```
 
 ### node.js
+```sh
 const JQL = require('..../jql/dist/jql.js').JQL;
+```
 
 ## Quick Start
 
