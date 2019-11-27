@@ -38,13 +38,21 @@ const items = [
 ];
 
 
-test('Evaluate number value', () => {
+test('Evaluate number value:', () => {
     const query = 'k1 = 1';
     const actual = JQL.filter(query, items, ITEM_KEY);
     expect(actual.length).toBe(1);
     const item = actual[0];
     expect(item.id).toBe(1);
     expect(item.k1).toBe(1);    
+});
+
+test('Evaluate number value:', () => {
+    const query = 'k1 > -1';
+    const actual = JQL.filter(query, items, ITEM_KEY);
+    expect(actual.length).toBe(2);
+    const ids = actual.map(x => x.id);
+    expect(ids).toEqual([1,2]);
 });
 
 test('Evaluate string value', () => {

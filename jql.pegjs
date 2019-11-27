@@ -95,7 +95,10 @@ HEXDIG    = [0-9a-f]i
 ws        = [ \t\n\r]*
 Unescaped = [\x20-\x21\x23-\x5B\x5D-\u10FFFF]
 String    = DQ chars:Char* DQ { return chars.join(""); }
-Integer   = digits:DIGIT+ { return parseInt(digits.join("")); }
+Integer   = int:(
+               s:([\+\-]? { return text(); })
+               digits:(DIGIT+)
+            ) { return parseInt(int[0] + int[1].join("")); }
 Boolean   = v:(TRUE / FALSE) { return v.toLowerCase() === 'true'; }
 Key       = [^=\(\) \t\n\r]+ { return text(); }
 Value     = String / Integer / Boolean
