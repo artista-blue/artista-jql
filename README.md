@@ -43,7 +43,7 @@ const query = "kb = false";
 const filteredItems = JQL.filter(query, items, itemKey);
 ```
 
-Return value
+Return filtered items.
 
 ```sh
 [
@@ -61,29 +61,48 @@ Return value
 
 ## Grammar
 
-### Logical Operator
+### Supported data types for right value
 
-* AND
-* OR
+| type    | example     |
+| ---     | ---         |
+| String  | "foo" "bar" |
+| Integer | 1 200       |
+| Boolean | true false  |
+
+### Logical Operators (case insensitive)
+
+| operator | description         |
+| ---      | ---                 |
+| AND      | logical conjunction |
+| OR       | logical sum         |
 
 
-### Comparison Operator
+### Comparison Operators (case insensitive)
 
-* =
-* >=
-* <=
-* >
-* <
-* CONTAINS 
+| operator | description                                                                                                                              |
+| ---      | ---                                                                                                                                      |
+| =        | equal                                                                                                                                    |
+| >=       | greater than or equal to                                                                                                                 |
+| <=       | less than or equal to                                                                                                                    |
+| >        | greater than                                                                                                                             |
+| <        | less than                                                                                                                                |
+| CONTAINS | Check if right value contains left value when right value is String<br>Or check if right value is in left array when left value is Array |
 
 
 ### Query examples
 
-* OK: (a = 1 AND b = 'foo')
-* OK: (a = 1 AND b = 'foo' and c = true)
-* BAD: (a = 1 AND b = 'foo' OR c = false)
-* OK: (a = 1 AND b = 'foo') OR c = false
-* OK: (a = 1 OR b = 'foo') AND c = false
-* OK: (a = 1 OR b = 'foo') AND (c = false AND d CONTAINS 'bar')
-* BAD: ((a = 1 AND b = 'foo') OR c = false) AND d CONTAINS 'bar'
+|      | sample queries                                            | description               |
+|------|-----------------------------------------------------------|---------------------------|
+| Good | name = "hoge"                                             | compare String            |
+| Good | name contains "eorg"                                      | partial match with String |
+| Good | age = 37, age < 30, age >= 3                              | compare Integer           |
+| Good | flag = true                                               | compare Boolean           |
+| Good | k1 = "v1" AND k2 = "v2"                                   | AND operator              |
+| Good | k1 = "v1" OR k2 = "v2"                                    | OR operator               |
+| Good | k1 = "v1" AND k2 = "v2" ... AND kx= "vx"                  | multiple AND/OR operator  |
+| BAD  | k1 = "v1" AND k2 = "v2" OR k3 = "v3"                      | mixed logical operators   |
+| Good | (a = 1 AND b = 'foo') OR c = false                        | with brackets             |
+| Good | (a = 1 OR b = 'foo') AND c = false                        | with brackets             |
+| Good | (a = 1 OR b = 'foo') AND (c = false AND d CONTAINS 'bar') | with brackets             |
+| BAD  | ((a = 1 AND b = 'foo') OR c = false) AND d CONTAINS 'bar' | nested brackets           |
 
