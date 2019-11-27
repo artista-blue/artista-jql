@@ -19,7 +19,8 @@ const items = [
 	id: 3,
 	ks1: "v1",
 	khoge: 'ho!!ge',
-	kb: false
+	kb: false,
+	knum: -14.5
     },
     {
 	id:4,
@@ -34,6 +35,10 @@ const items = [
 	id:6,
 	khoge: 'hoge!',
 	kb: false
+    },
+    {
+	id: 7,
+	knum: -15
     }
 ];
 
@@ -48,11 +53,19 @@ test('Evaluate number value:', () => {
 });
 
 test('Evaluate number value:', () => {
-    const query = 'k1 > -1';
+    const query = 'knum = -15';
+    const actual = JQL.filter(query, items, ITEM_KEY);
+    expect(actual.length).toBe(1);
+    const ids = actual.map(x => x.id);
+    expect(ids).toEqual([7]);
+});
+
+test('Evaluate number value:', () => {
+    const query = 'knum < -14 AND knum >= -15';
     const actual = JQL.filter(query, items, ITEM_KEY);
     expect(actual.length).toBe(2);
     const ids = actual.map(x => x.id);
-    expect(ids).toEqual([1,2]);
+    expect(ids).toEqual([3, 7]);
 });
 
 test('Evaluate string value', () => {
@@ -165,9 +178,9 @@ test('Nested operators: #2', () => {
 test('Nested operators: #3', () => {
     const query = '(kb = false AND id <= 3) OR (khoge CONTAINS "hoge" OR id > 4)';
     const actual = JQL.filter(query, items, ITEM_KEY);
-    expect(actual.length).toBe(4);
+    expect(actual.length).toBe(5);
     const ids = actual.map(x => x.id);
-    expect(ids).toEqual([2, 3, 5, 6]);
+    expect(ids).toEqual([2, 3, 5, 6, 7]);
 });
 
 test('Multiple nested operators', () => {
@@ -177,10 +190,3 @@ test('Multiple nested operators', () => {
     } catch (e) {
     }
 });
-
-const texts = [
-    'k1 = "v1" AND (k2="v2" OR k3 ="v3") ',
-    '(k1 = "v1" AND k2="v2") OR k3 ="v3" ',
-    '(k1 = "v1" AND k2="v2" AND k4 = "v4") OR k3 ="v3" ',
-    '(k1 = "v1" AND k2="v2" AND k4 = "v4") OR (k3 ="v3" AND k5="v5") '
-];

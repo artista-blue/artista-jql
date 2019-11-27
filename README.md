@@ -65,8 +65,8 @@ Return filtered items.
 
 | type    | example     |
 | ---     | ---         |
-| String  | "foo" "bar" |
-| Integer | 1 200       |
+| String  | "foo", "bar", ... |
+| Number | 1, 200, -15, 14.5, ...       |
 | Boolean | true false  |
 
 ### Logical Operators (case insensitive)
@@ -95,7 +95,7 @@ Return filtered items.
 |------|-----------------------------------------------------------|---------------------------|
 | Good | name = "hoge"                                             | compare String            |
 | Good | name contains "eorg"                                      | partial match with String |
-| Good | age = 37, age < 30, age >= 3                              | compare Integer           |
+| Good | age = 37, age < 30, age >= 3                              | compare Number            |
 | Good | flag = true                                               | compare Boolean           |
 | Good | k1 = "v1" AND k2 = "v2"                                   | AND operator              |
 | Good | k1 = "v1" OR k2 = "v2"                                    | OR operator               |
