@@ -97,6 +97,7 @@ Return filtered items.
 | Good | name contains "eorg"                                      | partial match with String |
 | Good | age = 37, age < 30, age >= 3                              | compare Number            |
 | Good | flag = true                                               | compare Boolean           |
+| Good | person.age > 40                                           | JSON dot notation         |
 | Good | k1 = "v1" AND k2 = "v2"                                   | AND operator              |
 | Good | k1 = "v1" OR k2 = "v2"                                    | OR operator               |
 | Good | k1 = "v1" AND k2 = "v2" ... AND kx= "vx"                  | multiple AND/OR operator  |
