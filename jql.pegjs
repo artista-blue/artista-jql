@@ -16,7 +16,7 @@ const LogicalOperator = {
     }
 };
 
-const cops = [['GE', '>='], ['LE', '<='], ['EQ', '==='], ['GT', '>'], ['LT', '<'], ['CONTAINS', 'CONTAINS']];
+const cops = [['GE', '>='], ['LE', '<='], ['EQ', '==='], ['NE', '!=='], ['GT', '>'], ['LT', '<'], ['CONTAINS', 'CONTAINS']];
 class ComparisonOperator {
     constructor(name, op) {
         this.name = name;
@@ -33,7 +33,14 @@ class ComparisonOperator {
     }
 
     static fromString(str) {
-        str = str === '=' ? '===' : str.toUpperCase();
+        switch (str) {
+        case '=':
+	   str = '==='; break;
+        case '!=':
+	   str = '!=='; break;
+        default:
+           str = str.toUpperCase(); break;
+        }
         const items = cops.map(x => ComparisonOperator[x[0]]);
 	for (const item of items) {
 	    if (item.op === str) {
@@ -77,6 +84,7 @@ Escape   = "\\"
 AND      = v:("AND" / "and") { return v.toUpperCase(); }
 OR       = v:("OR" / "or") { return v.toUpperCase(); }
 EQ       = "="
+NE       = "!="
 GT       = ">"
 GE       = ">="
 LT       = "<"
@@ -120,7 +128,7 @@ Char
 
 ///// Operators /////
 ComparisonOperator
-  = op:(GE / LE / EQ / GT / LT / CONTAINS) { return ComparisonOperator.fromString(text()); }
+  = op:(GE / LE / EQ / NE / GT / LT / CONTAINS) { return ComparisonOperator.fromString(text()); }
 
 LogicalOperator
   = AND / OR { return LogicalOperator.fromString(text()); }

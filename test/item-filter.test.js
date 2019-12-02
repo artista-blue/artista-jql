@@ -96,6 +96,14 @@ test('Evaluate condition with brackets', () => {
     expect(vals.every(x => x === 'v1')).toBeTruthy();
 });
 
+test('Evaluate condition with brackets', () => {
+    const query = 'id != 5'
+    const actual = JQL.filter(query, items, ITEM_KEY);
+    expect(actual.length).toBe(6);
+    const ids = actual.map(x => x.id);
+    expect(ids).toEqual([1, 2, 3, 4, 6, 7]);
+});
+
 test('Evaluate CONTAINS', () => {
     const _query = 'khoge CONTAINS "hoge"';
     for (const query of [_query, _query.replace('CONTAINS', 'contains')]) {
