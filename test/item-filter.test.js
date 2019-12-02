@@ -216,6 +216,7 @@ test('Nested operators: #4', () => {
 test('Multiple nested operators', () => {
     try {
 	const query = '((kb = false AND id <= 3) OR (khoge CONTAINS "hoge" OR id > 4)) AND khoge = "hoge"';
+	const actual = JQL.filter(query, items, ITEM_KEY);
 	expect(false).toBe(true);
     } catch (e) {
     }
