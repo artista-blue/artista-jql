@@ -96,7 +96,7 @@ test('Evaluate condition with brackets', () => {
     expect(vals.every(x => x === 'v1')).toBeTruthy();
 });
 
-test('Evaluate condition with brackets', () => {
+test('Evaluate not equal', () => {
     const query = 'id != 5'
     const actual = JQL.filter(query, items, ITEM_KEY);
     expect(actual.length).toBe(6);
@@ -175,6 +175,14 @@ test('Nested operators: #1', () => {
     expect(ids).toEqual([6]);
 });
 
+test('Evaluate ! (NOT)', () => {
+    const query = '!(id != 5)'
+    const actual = JQL.filter(query, items, ITEM_KEY);
+    expect(actual.length).toBe(1);
+    const ids = actual.map(x => x.id);
+    expect(ids).toEqual([5]);
+});
+
 test('Nested operators: #2', () => {
     const query = 'kb = false AND (khoge CONTAINS "hoge" OR id > 4)';
     const actual = JQL.filter(query, items, ITEM_KEY);
@@ -189,6 +197,20 @@ test('Nested operators: #3', () => {
     expect(actual.length).toBe(5);
     const ids = actual.map(x => x.id);
     expect(ids).toEqual([2, 3, 5, 6, 7]);
+});
+
+/**
+ *  kb = false AND id <= 3                                            =>  [2, 3]
+ *  (khoge CONTAINS "hoge" OR id > 4)   =>  [2, 5, 6, 7]
+ *  !(khoge CONTAINS "hoge" OR id > 4)                                =>  [1, 3, 4]
+ *  (kb = false AND id <= 3) OR ! (khoge CONTAINS "hoge" OR id > 4)'  =>  [1, 2, 3, 4]
+ */
+test('Nested operators: #4', () => {
+    const query = '(kb = false AND id <= 3) OR ! (khoge CONTAINS "hoge" OR id > 4)';
+    const actual = JQL.filter(query, items, ITEM_KEY);
+    expect(actual.length).toBe(4);
+    const ids = actual.map(x => x.id);
+    expect(ids).toEqual([1, 2, 3, 4]);
 });
 
 test('Multiple nested operators', () => {

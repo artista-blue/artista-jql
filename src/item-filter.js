@@ -22,6 +22,18 @@ class JsonUtils {
 }
 
 
+class SetUtils {
+
+    static sub(setA, setB) {
+        const _difference = new Set(setA);
+	for (var elem of setB) {
+            _difference.delete(elem);
+	}
+	return _difference;
+    }
+}
+
+
 class ItemFilter {
 
     constructor (configGroup, items, itemKey) {
@@ -106,7 +118,14 @@ class ItemFilter {
 	default:
 	    throw new Error();
 	}
-	cg.ids = filteredIds;
+	// Evaluate ! (NOT)
+	if (cg.not === true) {
+	    const itemIdSet = new Set(this.items.map(x => x.id));
+	    const sub = SetUtils.sub(itemIdSet, filteredIds);
+            cg.ids = sub
+	} else {
+            cg.ids = filteredIds;
+	}
     }
 
     _calc(cond) {

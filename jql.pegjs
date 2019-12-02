@@ -67,10 +67,11 @@ class Condition {
 }
 
 class ConditionGroup {
-    constructor(op, conditions) {
+    constructor(op, conditions, not=false) {
         this.classname = "ConditionGroup";
         this.op = op;
 	this.conditions = conditions;
+	this.not = not;
     }
 }
 
@@ -95,6 +96,7 @@ R_PAR    = ")"
 DQ       = '"'
 TRUE     = 'true'
 FALSE    = 'false'
+NOT      = '!'
 
 
 ///// Types /////
@@ -160,10 +162,9 @@ ConditionGroups
     )
 
 ConditionGroup
-  =  L_PAR ws cg:_ConditionGroup ws R_PAR { return cg; }
-    / cg:_ConditionGroup {
-      return cg;
-    }
+  = L_PAR ws cg:_ConditionGroup ws R_PAR { return cg; }
+    / NOT ws L_PAR ws cg:_ConditionGroup ws R_PAR { cg.not = true; return cg; }
+    / cg:_ConditionGroup { return cg; }
 
 _ConditionGroup
   = conds:(

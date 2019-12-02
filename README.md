@@ -69,12 +69,14 @@ Return filtered items.
 | Number | 1, 200, -15, 14.5, ...       |
 | Boolean | true false  |
 
+
 ### Logical Operators (case insensitive)
 
 | operator | description         |
 | ---      | ---                 |
 | AND      | logical conjunction |
 | OR       | logical sum         |
+| !        | logical negation    |
 
 
 ### Comparison Operators (case insensitive)
@@ -82,6 +84,7 @@ Return filtered items.
 | operator | description                                                                                                                              |
 | ---      | ---                                                                                                                                      |
 | =        | equal                                                                                                                                    |
+| !=       | not equal                                                                                                                                |
 | >=       | greater than or equal to                                                                                                                 |
 | <=       | less than or equal to                                                                                                                    |
 | >        | greater than                                                                                                                             |
@@ -97,11 +100,13 @@ Return filtered items.
 | Good | name contains "eorg"                                      | partial match with String |
 | Good | age = 37, age < 30, age >= 3                              | compare Number            |
 | Good | flag = true                                               | compare Boolean           |
+| Good | name != "George"                                          | not equal                 |
 | Good | person.age > 40                                           | JSON dot notation         |
 | Good | k1 = "v1" AND k2 = "v2"                                   | AND operator              |
 | Good | k1 = "v1" OR k2 = "v2"                                    | OR operator               |
 | Good | k1 = "v1" AND k2 = "v2" ... AND kx= "vx"                  | multiple AND/OR operator  |
 | BAD  | k1 = "v1" AND k2 = "v2" OR k3 = "v3"                      | mixed logical operators   |
+| Good | ! (name contains "eorg")                                  | ! operator                |
 | Good | (a = 1 AND b = 'foo') OR c = false                        | with brackets             |
 | Good | (a = 1 OR b = 'foo') AND c = false                        | with brackets             |
 | Good | (a = 1 OR b = 'foo') AND (c = false AND d CONTAINS 'bar') | with brackets             |
