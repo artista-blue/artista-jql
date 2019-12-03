@@ -1,7 +1,5 @@
 const JQL = require("../dist/jql.js").JQL;
 
-const ITEM_KEY = 'id';
-
 const items = [
     {
 	id: 1,
@@ -45,7 +43,7 @@ const items = [
 
 test('Evaluate number value:', () => {
     const query = 'k1 = 1';
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(1);
     const item = actual[0];
     expect(item.id).toBe(1);
@@ -54,7 +52,7 @@ test('Evaluate number value:', () => {
 
 test('Evaluate number value:', () => {
     const query = 'knum = -15';
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(1);
     const ids = actual.map(x => x.id);
     expect(ids).toEqual([7]);
@@ -62,7 +60,7 @@ test('Evaluate number value:', () => {
 
 test('Evaluate number value:', () => {
     const query = 'knum < -14 AND knum >= -15';
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(2);
     const ids = actual.map(x => x.id);
     expect(ids).toEqual([3, 7]);
@@ -70,7 +68,7 @@ test('Evaluate number value:', () => {
 
 test('Evaluate string value', () => {
     const query = 'ks1 = "v1"';
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(2);
     const ids = actual.map(x => x.id);
     const vals = actual.map(x => x.ks1);
@@ -80,7 +78,7 @@ test('Evaluate string value', () => {
 
 test('Evaluate boolean value', () => {
     const query = 'kb = true';
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(3);
     const ids = actual.map(x => x.id);
     expect(ids).toEqual([1, 4, 5]);
@@ -88,7 +86,7 @@ test('Evaluate boolean value', () => {
 
 test('Evaluate condition with brackets', () => {
     const query = '(ks1 = "v1")';
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(2);
     const ids = actual.map(x => x.id);
     const vals = actual.map(x => x.ks1);
@@ -98,7 +96,7 @@ test('Evaluate condition with brackets', () => {
 
 test('Evaluate not equal', () => {
     const query = 'id != 5'
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(6);
     const ids = actual.map(x => x.id);
     expect(ids).toEqual([1, 2, 3, 4, 6, 7]);
@@ -107,7 +105,7 @@ test('Evaluate not equal', () => {
 test('Evaluate CONTAINS', () => {
     const _query = 'khoge CONTAINS "hoge"';
     for (const query of [_query, _query.replace('CONTAINS', 'contains')]) {
-	const actual = JQL.filter(query, items, ITEM_KEY);
+	const actual = JQL.filter(query, items);
 	expect(actual.length).toBe(3);
 	const ids = actual.map(x => x.id);
 	expect(ids).toEqual([2,5,6]);
@@ -117,7 +115,7 @@ test('Evaluate CONTAINS', () => {
 test('Evaluate AND', () => {
     const _query = '(khoge CONTAINS "hoge" AND kb = false)';
     for (const query of [_query, _query.replace('AND', 'and')]) {
-	const actual = JQL.filter(query, items, ITEM_KEY);
+	const actual = JQL.filter(query, items);
 	expect(actual.length).toBe(2);
 	const ids = actual.map(x => x.id);
 	expect(ids).toEqual([2, 6]);
@@ -127,7 +125,7 @@ test('Evaluate AND', () => {
 test('Evaluate OR', () => {
     const _query = '(khoge CONTAINS "hoge" OR kb = false)';
     for (const query of [_query, _query.replace('OR', 'or')]) {    
-	const actual = JQL.filter(query, items, ITEM_KEY);
+	const actual = JQL.filter(query, items);
 	expect(actual.length).toBe(4);
 	const ids = actual.map(x => x.id);
 	expect(ids).toEqual([2, 3, 5, 6]);
@@ -136,7 +134,7 @@ test('Evaluate OR', () => {
 
 test('Multiple AND', () => {
     const query = 'kb = false AND khoge CONTAINS "hoge" AND id > 4';
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(1);
     const ids = actual.map(x => x.id);
     expect(ids).toEqual([6]);
@@ -144,7 +142,7 @@ test('Multiple AND', () => {
 
 test('Multiple OR', () => {
     const query = 'id <= 2 OR id = 4 OR id = 6'
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(4);
     const ids = actual.map(x => x.id);
     expect(ids).toEqual([1, 2, 4, 6]);
@@ -152,7 +150,7 @@ test('Multiple OR', () => {
 
 test('Multiple OR', () => {
     const query = 'id <= 2 OR id = 4 OR id = 6'
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(4);
     const ids = actual.map(x => x.id);
     expect(ids).toEqual([1, 2, 4, 6]);
@@ -161,7 +159,7 @@ test('Multiple OR', () => {
 test('Mixed logical operators is NOT permitted', () => {
     const query = 'id <= 2 AND id = 4 OR id = 6';
     try {
-        const actual = JQL.filter(query, items, ITEM_KEY);
+        const actual = JQL.filter(query, items);
 	expect(false).toBe(true);
     } catch (e) {
     }
@@ -169,7 +167,7 @@ test('Mixed logical operators is NOT permitted', () => {
 
 test('Nested operators: #1', () => {
     const query = 'kb = false AND (khoge CONTAINS "hoge" AND id > 4)';
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(1);
     const ids = actual.map(x => x.id);
     expect(ids).toEqual([6]);
@@ -177,7 +175,7 @@ test('Nested operators: #1', () => {
 
 test('Evaluate ! (NOT)', () => {
     const query = '!(id != 5)'
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(1);
     const ids = actual.map(x => x.id);
     expect(ids).toEqual([5]);
@@ -185,7 +183,7 @@ test('Evaluate ! (NOT)', () => {
 
 test('Nested operators: #2', () => {
     const query = 'kb = false AND (khoge CONTAINS "hoge" OR id > 4)';
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(2);
     const ids = actual.map(x => x.id);
     expect(ids).toEqual([2, 6]);
@@ -193,7 +191,7 @@ test('Nested operators: #2', () => {
 
 test('Nested operators: #3', () => {
     const query = '(kb = false AND id <= 3) OR (khoge CONTAINS "hoge" OR id > 4)';
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(5);
     const ids = actual.map(x => x.id);
     expect(ids).toEqual([2, 3, 5, 6, 7]);
@@ -207,7 +205,7 @@ test('Nested operators: #3', () => {
  */
 test('Nested operators: #4', () => {
     const query = '(kb = false AND id <= 3) OR ! (khoge CONTAINS "hoge" OR id > 4)';
-    const actual = JQL.filter(query, items, ITEM_KEY);
+    const actual = JQL.filter(query, items);
     expect(actual.length).toBe(4);
     const ids = actual.map(x => x.id);
     expect(ids).toEqual([1, 2, 3, 4]);
@@ -216,7 +214,7 @@ test('Nested operators: #4', () => {
 test('Multiple nested operators', () => {
     try {
 	const query = '((kb = false AND id <= 3) OR (khoge CONTAINS "hoge" OR id > 4)) AND khoge = "hoge"';
-	const actual = JQL.filter(query, items, ITEM_KEY);
+	const actual = JQL.filter(query, items);
 	expect(false).toBe(true);
     } catch (e) {
     }

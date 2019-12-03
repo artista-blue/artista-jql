@@ -1548,6 +1548,10 @@ PEG = (function() {
 })();
 class JsonUtils {
 
+    static get SEQ_ID_KEY () {
+	return '__JQL_SEQ_ID';
+    }
+
     static get_value_from_path(original_json, json_path) {
 	const elements = json_path.split(".");
 	let json = original_json;
@@ -1567,6 +1571,19 @@ class JsonUtils {
 	}
 	return json;
     }
+
+    static add_seq_id(items) {
+	for (let i = 0; i < items.length; i ++) {
+	    const item = items[i];
+	    item[JsonUtils.SEQ_ID_KEY] = i + 1;
+	}
+    }
+
+    static del_seq_id(items) {
+	for (const item of items) {
+	    delete item[JsonUtils.SEQ_ID_KEY];
+	}
+    }
 }
 
 
@@ -1584,11 +1601,10 @@ class SetUtils {
 
 class ItemFilter {
 
-    constructor (configGroup, items, itemKey) {
+    constructor (configGroup, items) {
 	this.configGroup = configGroup;
 	this.original_items = items;
 	this.items = Array.from(this.original_items);
-	this.itemKey = itemKey;
     }
 
     _contains (item, key, operator, value) {
@@ -1606,9 +1622,8 @@ class ItemFilter {
 	    if (!this._contains(item, key, op, value)) {
 		continue;
 	    }
-	    ids.push(item[this.itemKey]);
+	    ids.push(item[JsonUtils.SEQ_ID_KEY]);
 	}
-	//console.log(`${key} ${op} ${value}: ids=${ids}`);
 	cond.ids = ids;
     }
 
@@ -1712,10 +1727,13 @@ class ItemFilter {
 
 class JQL {
 
-    static filter(query, items, itemKey) {
+    static filter(query, items) {
 	const condition = PEG.parse(query);
-	const filter = new ItemFilter(condition, items, itemKey);
-	return filter.execute();
+	JsonUtils.add_seq_id(items);
+	const filter = new ItemFilter(condition, items);
+	const filteredItems = filter.execute();
+	JsonUtils.del_seq_id(filteredItems);
+	return filteredItems;
     }
 }
 
