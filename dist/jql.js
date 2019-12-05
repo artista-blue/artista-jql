@@ -1597,7 +1597,7 @@ class SetUtils {
 	return _difference;
     }
 
-    static merge(setList) {
+    static or(setList) {
 	const merged = new Set();
 	for (const set of setList) {
 	    for (const item of set) {
@@ -1607,7 +1607,8 @@ class SetUtils {
 	return merged;
     }
 
-    static and(allIdSet, idSetList) {
+    static and(idSetList) {
+	const allIdSet = SetUtils.or(idSetList);
 	const set = new Set();
 	for (const id of allIdSet) {
 	    let flag = true;
@@ -1669,14 +1670,13 @@ class ItemFilter {
 	if (idSetList.some(x => x === null)) {
 	    return;
 	}
-	const allIdSet = SetUtils.merge(idSetList);
 	let filteredIds;
 	switch (cg.op) {
 	case 'AND':	    
-	    filteredIds = SetUtils.and(allIdSet, idSetList);
+	    filteredIds = SetUtils.and(idSetList);
 	    break;
 	case 'OR':
-	    filteredIds = allIdSet;
+	    filteredIds = SetUtils.or(idSetList);
 	    break;
 	default:
 	    throw new Error();

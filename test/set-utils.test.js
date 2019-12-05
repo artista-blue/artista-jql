@@ -48,11 +48,11 @@ test('sub: 4', () => {
     }
 });
 
-test('merge: 1', () => {
+test('or: 1', () => {
     const set1 = new Set([1, 2, 3]);
     const set2 = new Set([4, 5, 6]);
     const setList = [set1, set2];
-    const merged = SetUtils.merge(setList);
+    const merged = SetUtils.or(setList);
     exp = [1, 2, 3, 4, 5, 6];
     expect(merged.size).toBe(exp.length);
     for (const item of exp) {
@@ -60,11 +60,11 @@ test('merge: 1', () => {
     }
 });
 
-test('merge: 2', () => {
+test('or: 2', () => {
     const set1 = new Set([1, 2, 3]);
     const set2 = new Set([2, 3, 4]);
     const setList = [set1, set2];
-    const merged = SetUtils.merge(setList);
+    const merged = SetUtils.or(setList);
     exp = [1, 2, 3, 4];
     expect(merged.size).toBe(exp.length);
     for (const item of exp) {
@@ -72,11 +72,11 @@ test('merge: 2', () => {
     }
 });
 
-test('merge: 3', () => {
+test('or: 3', () => {
     const set1 = new Set([]);
     const set2 = new Set([]);
     const setList = [set1, set2];
-    const merged = SetUtils.merge(setList);
+    const merged = SetUtils.or(setList);
     exp = [];
     expect(merged.size).toBe(exp.length);
     for (const item of exp) {
@@ -84,11 +84,11 @@ test('merge: 3', () => {
     }
 });
 
-test('merge: 4', () => {
+test('or: 4', () => {
     const set1 = new Set([]);
     const set2 = new Set([2, 3, 4]);
     const setList = [set1, set2];
-    const merged = SetUtils.merge(setList);
+    const merged = SetUtils.or(setList);
     exp = [2, 3, 4];
     expect(merged.size).toBe(exp.length);
     for (const item of exp) {
