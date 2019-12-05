@@ -48,6 +48,33 @@ class SetUtils {
 	}
 	return _difference;
     }
+
+    static merge(setList) {
+	const merged = new Set();
+	for (const set of setList) {
+	    for (const item of set) {
+		merged.add(item);
+	    }
+	}
+	return merged;
+    }
+
+    static and(allIdSet, idSetList) {
+	const set = new Set();
+	for (const id of allIdSet) {
+	    let flag = true;
+	    for (const idSet of idSetList) {
+		if (!idSet.has(id)) {
+		    flag = false;
+		    break;
+		}
+	    }
+	    if (flag === true) {
+		set.add(id);
+	    }
+	}
+	return set;
+    }
 }
 
 
@@ -79,33 +106,6 @@ class ItemFilter {
 	cond.ids = ids;
     }
 
-    _get_all_id_set(idSetList) {
-	const set = new Set();
-	for (const idSet of idSetList) {
-	    for (const id of idSet) {
-		set.add(id);
-	    }
-	}
-	return set;
-    }
-
-    _get_common_id_set(allIdSet, idSetList) {
-	const set = new Set();
-	for (const id of allIdSet) {
-	    let flag = true;
-	    for (const idSet of idSetList) {
-		if (!idSet.has(id)) {
-		    flag = false;
-		    break;
-		}
-	    }
-	    if (flag === true) {
-		set.add(id);
-	    }
-	}
-	return set;
-    }
-    
     _calc_condition_group(cg) {
 	const idSetList = [];
 	const children = cg.conditions;
@@ -121,11 +121,11 @@ class ItemFilter {
 	if (idSetList.some(x => x === null)) {
 	    return;
 	}
-	const allIdSet = this._get_all_id_set(idSetList);
+	const allIdSet = SetUtils.merge(idSetList);
 	let filteredIds;
 	switch (cg.op) {
 	case 'AND':	    
-	    filteredIds = this._get_common_id_set(allIdSet, idSetList);
+	    filteredIds = SetUtils.and(allIdSet, idSetList);
 	    break;
 	case 'OR':
 	    filteredIds = allIdSet;
