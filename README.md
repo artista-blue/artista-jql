@@ -26,21 +26,32 @@ Filter following JSON data.
 const items = [
   {
     id: 1,
-    kb: true
+    kb: true,
+    foo: {
+        bar: "FOO"
+    }
   },
   {
     id: 2,
-    kb: false
+    kb: false,
+    foo: {
+        bar: "FOO"
+    }
   },
   {
     id: 3,
-    kb: false
+    kb: false,
+    foo: {
+        bar: "BAR"
+    }
   }
 ];
+```
 
-const itemKey = 'id';  // identity for object
+Query sample 1
+```sh
 const query = "kb = false";
-const filteredItems = JQL.filter(query, items, itemKey);
+const filteredItems = JQL.filter(query, items);
 ```
 
 Return filtered items.
@@ -51,6 +62,23 @@ Return filtered items.
     id: 2,
     kb: false
   },
+  {
+    id: 3,
+    kb: false
+  }
+];
+```
+
+Query sample 2
+```sh
+const query = 'foo.bar = "BAR"';
+const filteredItems = JQL.filter(query, items);
+```
+
+Return filtered items.
+
+```sh
+[
   {
     id: 3,
     kb: false
