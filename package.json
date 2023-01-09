@@ -26,6 +26,6 @@
    },
    "devDependencies": {
       "jest": "^24.9.0",
-      "rewire": "^4.0.1"
+      "rewire": "^6.0.0"
    }
 }
